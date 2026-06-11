@@ -145,8 +145,15 @@
     const STAGE_W = 1920, STAGE_H = 1080;
     const stages = document.querySelectorAll('.stage');
     const pages  = document.querySelectorAll('.page');
+    const MOBILE_BP = 768;
     function fit(){
       const w = document.documentElement.clientWidth;
+      if (w <= MOBILE_BP) {
+        // 手機版：交給 responsive.css 的流動排版，不做縮放
+        stages.forEach(st => { st.style.transform = ''; });
+        pages.forEach(p => { p.style.height = ''; });
+        return;
+      }
       const s = w / STAGE_W;
       stages.forEach(st => { st.style.transform = 'scale(' + s + ')'; });
       pages.forEach(p => { p.style.height = (STAGE_H * s) + 'px'; });
