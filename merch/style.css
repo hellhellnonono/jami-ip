@@ -1,0 +1,391 @@
+/* 周邊商品 — 應用頁專屬樣式
+   專屬於 merch/index.html — 包含全站共用骨架 + 本頁區塊樣式。
+   設計變數沿用 ../colors_and_type.css。 */
+
+
+  :root {
+    /* Deck-specific scale for 1920x1080 */
+    --type-hero:     130px;
+    --type-title:    78px;
+    --type-h1:       64px;
+    --type-subtitle: 44px;
+    --type-body:     32px;
+    --type-small:    26px;
+    --type-eyebrow:  24px;
+
+    --pad-top:    96px;
+    --pad-bottom: 88px;
+    --pad-x:      120px;
+    --gap-title:  48px;
+    --gap-item:   28px;
+  }
+
+  /* ===== Stage background ===== */
+  deck-stage { background: #2B2521; }
+  section { background: var(--paper); overflow: hidden; }
+
+  /* ===== Re-usable slide chrome ===== */
+  .slide {
+    position: relative;
+    width: 100%; height: 100%;
+    padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+    box-sizing: border-box;
+    font-family: var(--font-zh);
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+  }
+  .slide.bg-blue   { background: var(--leaf-blue-wash); }
+  .slide.bg-green  { background: var(--leaf-green-wash); }
+  .slide.bg-blush  { background: var(--blush-wash); }
+  .slide.bg-paper2 { background: var(--paper-2); }
+  .slide.bg-ink    { background: var(--ink); color: var(--paper); }
+
+  /* paper-grain overlay everywhere */
+  .grain::after {
+    content: "";
+    position: absolute; inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+    opacity: 0.06;
+    mix-blend-mode: multiply;
+  }
+
+  /* ===== Typography helpers ===== */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--type-eyebrow);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--leaf-blue);
+    font-weight: 500;
+  }
+  .eyebrow.green { color: var(--leaf-green); }
+  .eyebrow.ink   { color: var(--ink); opacity: .7; }
+  .title {
+    font-family: var(--font-zh);
+    font-weight: 900;
+    font-size: var(--type-title);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .h1 {
+    font-family: var(--font-zh);
+    font-weight: 900;
+    font-size: var(--type-h1);
+    line-height: 1.1;
+  }
+  .sub {
+    font-family: var(--font-zh);
+    font-weight: 500;
+    font-size: var(--type-subtitle);
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  .body {
+    font-family: var(--font-zh);
+    font-size: var(--type-body);
+    line-height: 1.6;
+    font-weight: 500;
+  }
+  .small {
+    font-family: var(--font-zh);
+    font-size: var(--type-small);
+    line-height: 1.5;
+    font-weight: 500;
+    opacity: .72;
+  }
+
+  /* ===== Page-number footer ===== */
+  /* Home (return-to-cover) star icon — injected on every content slide */
+  .home-star {
+    position: absolute;
+    top: 40px;
+    right: 56px;
+    width: 64px;
+    height: 64px;
+    z-index: 40;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+    animation: home-bob 3s ease-in-out infinite;
+  }
+  .home-star img { width: 100%; height: 100%; display: block; object-fit: contain; }
+  .home-star:hover { transform: scale(1.15) rotate(-8deg); }
+  .home-star:active { transform: scale(0.92) rotate(4deg); }
+  .home-star:focus-visible { outline: 3px dashed var(--leaf-blue); outline-offset: 4px; border-radius: 50%; }
+  @keyframes home-bob {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50%      { transform: translateY(-5px) rotate(2deg); }
+  }
+  .page-num {
+    position: absolute;
+    left: var(--pad-x);
+    bottom: 48px;
+    font-family: var(--font-mono);
+    font-size: 24px;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    opacity: .55;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .page-num .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--leaf-blue); }
+  .bg-ink .page-num { color: var(--paper); opacity: .6; }
+  .bg-ink .page-num .dot { background: var(--leaf-green); }
+
+  /* ===== Sticker / card primitives ===== */
+  .sticker-box {
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: 28px 22px 30px 24px;
+    box-shadow: 8px 8px 0 0 var(--ink);
+  }
+  .pill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 22px;
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    background: var(--paper);
+    font-weight: 800;
+    font-size: 26px;
+    line-height: 1;
+    box-shadow: 3px 3px 0 0 var(--ink);
+  }
+  .pill-tag .dotc { width: 14px; height: 14px; border-radius: 50%; }
+
+  /* ===== Slide 09 — Applications ===== */
+  .apps-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 24px;
+    margin-top: 56px;
+    flex: 1;
+  }
+  .app-cell {
+    border: 3px solid var(--ink);
+    border-radius: 24px 18px 26px 20px;
+    box-shadow: 7px 7px 0 0 var(--ink);
+    padding: 28px;
+    background: var(--paper-2);
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+  }
+  .app-cell.big {
+    grid-row: 1 / span 2;
+    background: var(--leaf-blue-wash);
+    align-items: center; justify-content: flex-end;
+  }
+  .app-cell.big img {
+    position: absolute;
+    top: 30px; left: 50%; transform: translateX(-50%);
+    height: 70%;
+  }
+  .app-cell.big { cursor: pointer; }
+  /* phone buzz shake — keeps the translateX(-50%) centering */
+  .app-cell.big img.buzz {
+    animation: phone-buzz 0.6s linear;
+  }
+  @keyframes phone-buzz {
+    0%   { transform: translateX(-50%) rotate(0deg); }
+    15%  { transform: translateX(calc(-50% + 4px)) rotate(2.5deg); }
+    30%  { transform: translateX(calc(-50% - 4px)) rotate(-2.5deg); }
+    45%  { transform: translateX(calc(-50% + 3px)) rotate(2deg); }
+    60%  { transform: translateX(calc(-50% - 3px)) rotate(-1.5deg); }
+    75%  { transform: translateX(calc(-50% + 2px)) rotate(1deg); }
+    90%  { transform: translateX(calc(-50% - 1px)) rotate(-0.5deg); }
+    100% { transform: translateX(-50%) rotate(0deg); }
+  }
+  /* vibration arcs near the phone (upper-right of the image) */
+  .buzz-wave {
+    position: absolute;
+    top: 34%; right: 16%;
+    z-index: 4;
+    opacity: 0;
+    color: var(--leaf-blue);
+    pointer-events: none;
+  }
+  .buzz-wave.bw-l { right: auto; left: 16%; transform: scaleX(-1); }
+  .buzz-wave svg { width: 40px; height: 40px; display: block; }
+  .app-cell.big.buzzing .buzz-wave { animation: buzz-wave-pop 0.6s ease-out; }
+  .app-cell.big.buzzing .buzz-wave.bw-l { animation: buzz-wave-pop-l 0.6s ease-out; }
+  @keyframes buzz-wave-pop {
+    0%   { opacity: 0; transform: translateX(-6px) scale(0.6); }
+    40%  { opacity: 1; transform: translateX(2px) scale(1); }
+    100% { opacity: 0; transform: translateX(10px) scale(1.15); }
+  }
+  @keyframes buzz-wave-pop-l {
+    0%   { opacity: 0; transform: scaleX(-1) translateX(-6px) scale(0.6); }
+    40%  { opacity: 1; transform: scaleX(-1) translateX(2px) scale(1); }
+    100% { opacity: 0; transform: scaleX(-1) translateX(10px) scale(1.15); }
+  }
+  .app-cell .h {
+    font-family: var(--font-zh);
+    font-weight: 900;
+    font-size: 38px;
+  }
+  .app-cell .d {
+    font-family: var(--font-zh);
+    font-size: 24px;
+    line-height: 1.5;
+    opacity: .72;
+    font-weight: 500;
+    margin-top: 6px;
+  }
+  .app-cell .num {
+    font-family: var(--font-mono);
+    font-size: 24px;
+    color: var(--leaf-blue);
+    margin-bottom: 8px;
+  }
+  .app-cell.app2 { background: var(--leaf-green-wash); }
+  .app-cell.app3 { background: var(--blush-wash); }
+  .app-cell.app4 { background: var(--paper-2); }
+  .app-cell.app5 { background: var(--star); }
+  .app-cell.app5 .d { opacity: .85; }
+
+  /* Section header (used on slide 4 / 6 etc — eyebrow + title) */
+  .head-block { display: flex; flex-direction: column; gap: 16px; }
+  .head-block .title { max-width: 1400px; }
+
+  /* Star doodle SVG class */
+  .star-doodle {
+    width: 80px; height: 80px;
+    color: var(--star);
+  }
+
+  /* ============================================================
+     ONE-PAGE SCROLLING SITE — overrides deck behavior
+     Each slide is a fixed 1920x1080 .stage scaled to viewport
+     width and stacked vertically.
+     ============================================================ */
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); }
+
+  .onepage { display: block; }
+  .page {
+    position: relative;
+    width: 100%;
+    height: 56.25vw;          /* 1080/1920 ratio — JS sets exact px */
+    overflow: hidden;
+    scroll-margin-top: 76px;  /* offset for sticky header */
+  }
+  .stage {
+    width: 1920px;
+    height: 1080px;
+    transform-origin: top left;
+    transform: scale(0.5);    /* JS overrides on load + resize */
+  }
+
+  /* ---- Sticky site navigation ---- */
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0 40px;
+    background: var(--paper-2);
+    border-bottom: 3px solid var(--ink);
+    font-family: var(--font-zh);
+  }
+  .site-brand {
+    display: flex; align-items: center; gap: 12px;
+    font-weight: 900; font-size: 24px;
+    color: var(--ink); text-decoration: none; white-space: nowrap;
+  }
+  .site-brand .brand-dot {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--leaf-green-wash); border: 3px solid var(--ink);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    flex-shrink: 0;
+  }
+  .site-brand .brand-dot img { width: 90%; height: 90%; object-fit: contain; transform: translateY(2px); }
+  .site-links {
+    display: flex; flex: 1; justify-content: center; gap: 46px;
+    font-weight: 700; font-size: 21px;
+  }
+  .site-links a {
+    color: var(--ink); text-decoration: none; position: relative;
+    padding: 6px 2px;
+    transition: color .2s ease, transform .2s cubic-bezier(.34,1.56,.64,1);
+  }
+  .site-links a:hover { color: var(--leaf-blue); transform: translateY(-2px) scale(1.06); }
+  .site-links a.active { color: var(--leaf-blue); }
+  .site-links a.active::after {
+    content: ""; position: absolute; left: 50%; bottom: -3px;
+    transform: translateX(-50%);
+    width: 26px; height: 3px; border-radius: 2px; background: var(--leaf-blue);
+  }
+  .site-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 22px;
+    background: var(--star); border: 3px solid var(--ink);
+    border-radius: 999px; box-shadow: 3px 3px 0 0 var(--ink);
+    font-weight: 900; font-size: 19px; color: var(--ink);
+    text-decoration: none; white-space: nowrap;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .site-cta:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 0 var(--ink); }
+  .site-cta:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 0 var(--ink); }
+
+  @media (max-width: 820px) {
+    .site-links { gap: 22px; font-size: 17px; }
+    .site-nav { padding: 0 20px; gap: 14px; }
+  }
+  @media (max-width: 560px) {
+    .site-cta { display: none; }
+    .site-brand span:last-child { display: none; }
+    .site-links { font-size: 15px; gap: 14px; }
+  }
+
+
+  /* ============================================================
+     MULTI-PAGE SITE CHROME — shared footer
+     ============================================================ */
+  .site-foot {
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    padding: 54px 20px;
+    background: var(--ink); color: var(--paper);
+    font-family: var(--font-zh);
+  }
+  .site-foot .foot-brand {
+    display: flex; align-items: center; gap: 12px;
+    font-weight: 900; font-size: 22px;
+  }
+  .site-foot .foot-brand .dot {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--leaf-green-wash); border: 3px solid var(--paper);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .site-foot .foot-brand .dot img { width: 90%; height: 90%; object-fit: contain; transform: translateY(2px); }
+  .foot-links {
+    display: flex; gap: 30px; flex-wrap: wrap; justify-content: center;
+    font-weight: 700; font-size: 18px;
+  }
+  .foot-links a { color: var(--paper); text-decoration: none; opacity: .82; transition: opacity .2s ease; }
+  .foot-links a:hover { opacity: 1; text-decoration: underline; }
+  .foot-copy { font-size: 14px; opacity: .55; font-family: var(--font-mono); letter-spacing: .04em; }
+
+
+  /* ============================================================
+     CLICK REACTION — match page 2 liveliness (visuals unchanged)
+     EVERY app card now responds with a bouncy pop; the big
+     phone card additionally keeps its buzz/vibration.
+     ============================================================ */
+  .app-cell { cursor: pointer; }
+  .app-cell.pop {
+    animation: cell-pop 0.55s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes cell-pop {
+    0%   { transform: translate(0,0)     scale(1)    rotate(0deg); }
+    30%  { transform: translate(-3px,-6px) scale(1.045) rotate(-1.6deg); }
+    62%  { transform: translate(2px,2px) scale(0.98) rotate(1deg); }
+    100% { transform: translate(0,0)     scale(1)    rotate(0deg); }
+  }
