@@ -5,7 +5,37 @@
    四個頁面（index / expressions / work-life / merch）共用。
    ============================================================ */
 
+/* 手機版浮動回頂端按鈕 — 桌機預設隱藏 */
+.home-fab { display: none; }
+
 @media (max-width: 768px) {
+
+  /* ---- 回頂端浮動星星（取代各區塊右上角的星星）---- */
+  .home-star { display: none; }
+  .home-fab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    right: 16px;
+    bottom: 20px;
+    width: 58px;
+    height: 58px;
+    padding: 7px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    box-shadow: 3px 3px 0 0 var(--ink);
+    z-index: 200;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(18px);
+    transition: opacity .25s ease, transform .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .home-fab img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .home-fab.show { opacity: 0.75; pointer-events: auto; transform: translateY(0); }
+  .home-fab:active { transform: translateY(2px) scale(0.94); box-shadow: 1px 1px 0 0 var(--ink); }
 
   /* ---- 停用縮放畫布，改為自然高度 ---- */
   .page {
