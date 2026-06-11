@@ -178,3 +178,26 @@
     window.addEventListener('scroll', spy, { passive: true });
     spy();
   })();
+
+  // 手機版浮動「回到最上面」星星按鈕 — 隨捲動顯示，桌機由 CSS 隱藏
+  (function(){
+    const brandImg = document.querySelector('.site-brand .brand-dot img');
+    const src = brandImg
+      ? brandImg.getAttribute('src').replace('jamie-hello-d3.png', 'wawa-home.png')
+      : 'assets/characters/wawa-home.png';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'home-fab';
+    btn.title = '回到最上面';
+    btn.setAttribute('aria-label', '回到最上面');
+    btn.innerHTML = '<img src="' + src + '" alt="">';
+    document.body.appendChild(btn);
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    function toggleFab(){
+      btn.classList.toggle('show', window.scrollY > 240);
+    }
+    window.addEventListener('scroll', toggleFab, { passive: true });
+    toggleFab();
+  })();
