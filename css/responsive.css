@@ -62,13 +62,14 @@
     padding-top: 8px;
   }
   .circle {
-    position: static;
+    position: relative;
+    left: auto; top: auto;
     box-shadow: 6px 6px 0 0 var(--ink);
     border-width: 3px;
   }
-  .circle.c1 { width: 230px; height: 230px; }
-  .circle.c2 { width: 92px;  height: 92px; }
-  .circle.c3 { width: 116px; height: 116px; }
+  .circle.c1 { width: 230px; height: 230px; left: auto; top: auto; }
+  .circle.c2 { width: 92px;  height: 92px;  left: auto; top: auto; }
+  .circle.c3 { width: 116px; height: 116px; left: auto; top: auto; }
   .circle.c1 .jamie-holds {
     width: 44px;
     right: 26px;
@@ -124,9 +125,9 @@
     grid-template-columns: 1fr;
     gap: 24px;
   }
-  .who-img-wrap { height: 250px; }
+  .who-img-wrap { height: 290px; }
   .who-img-wrap img,
-  .who-img-wrap.walk img { width: 210px; }
+  .who-img-wrap.walk img { width: 185px; }
   .who-text { gap: 14px; align-items: center; text-align: center; }
   .who-quote { font-size: clamp(32px, 9vw, 42px); }
   .who-body  { font-size: 16px; max-width: none; }
@@ -160,7 +161,7 @@
     grid-template-columns: 1fr;
     gap: 24px;
   }
-  .anatomy-img-box { width: min(320px, 78vw); }
+  .anatomy-img-box { width: min(240px, 62vw); }
   .mark.mark-blue  { left: 0;      top: 0;      width: 24.7%; height: 28.0%; }
   .mark.mark-green { left: 75.2%;  top: 0;      width: 25.0%; height: 27.8%; }
   .mark.mark-star  { left: 37.7%;  top: 59.7%;  width: 23.4%; height: 12.9%; }
@@ -277,13 +278,13 @@
     grid-template-columns: 1fr;
     gap: 28px;
   }
-  .close-text { gap: 14px; align-items: center; text-align: center; }
+  .close-text { gap: 14px; }
   .close-title { font-size: clamp(44px, 12vw, 56px); }
   .close-sub   { font-size: 17px; }
-  .close-img-wrap { min-height: 300px; }
-  .close-img-wrap img { width: 170px; }
+  .close-img-wrap { min-height: 272px; }
+  .close-img-wrap img { width: 128px; }
   .close-img-wrap::before {
-    width: 264px; height: 264px;
+    width: 240px; height: 240px;
     border-width: 3px;
     box-shadow: 7px 7px 0 0 var(--ink);
   }
